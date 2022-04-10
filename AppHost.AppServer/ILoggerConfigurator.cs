@@ -1,0 +1,19 @@
+/* AppHostDemo - (C) 2022 Premysl Fara  */
+
+namespace AppHost.AppServer;
+
+using Microsoft.Extensions.Logging;
+
+
+/// <summary>
+/// Custom logger configurator.
+/// </summary>
+public interface ILoggerConfigurator
+{
+    /// <summary>
+    /// Configures and adds a custom logger.
+    /// </summary>
+    /// <param name="builder">An ILoggingBuilder instance.</param>
+    /// <returns>The received ILoggingBuilder instance.</returns>
+    ILoggingBuilder Configure(ILoggingBuilder builder);
+}
