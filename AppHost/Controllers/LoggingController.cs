@@ -6,11 +6,9 @@ namespace AppHost.Controllers
 
     using Microsoft.Extensions.Logging;
     
-    using AppHost.Models;
-    
     
     [ApiController]
-    [Route("[controller]")]
+    [Route("log")]
     public class LoggingController : ControllerBase
     {
         private static readonly string[] LogLevels = new[]
@@ -31,15 +29,17 @@ namespace AppHost.Controllers
             return LogLevels;
         }
         
-        [HttpPost(Name = "Log")]
-        public void Log(string? logLevel, string? message)
+        [HttpPost]
+        [Consumes("application/x-www-form-urlencoded")]
+        public void Log([FromForm] string? logLevel, [FromForm] string? message)
         {
             if (string.IsNullOrEmpty(logLevel))
             {
                 logLevel = "information";
             }
 
-            _logger.LogInformation("A message '{Message}' at '{LogLevel}' log level received", message, logLevel);
+            _logger.LogInformation("A message '{Message}' at '{LogLevel}' log level received",
+                message, logLevel);
         }
     }    
 }
