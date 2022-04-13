@@ -30,7 +30,7 @@ namespace AppHost.Controllers
         }
         
         [HttpPost]
-        [Consumes("application/x-www-form-urlencoded")]
+        // [Consumes("application/x-www-form-urlencoded")]  // -> For FormUrlEncodedContent, not necessary.
         public void Log([FromForm] string? logLevel, [FromForm] string? message)
         {
             if (string.IsNullOrEmpty(logLevel))

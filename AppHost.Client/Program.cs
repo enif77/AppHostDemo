@@ -11,11 +11,18 @@ using (var client = new HttpClient
     {
         Console.WriteLine("Sending message NO. {0}", i);
     
-        var content = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+        // var content = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+        // {
+        //     new("logLevel", "trace"),
+        //     new("message", $"A test message NO. {i}!")
+        // });
+        
+        // https://brokul.dev/sending-files-and-additional-data-using-httpclient-in-net-core
+        using var content = new MultipartFormDataContent
         {
-            new("logLevel", "trace"),
-            new("message", $"A test message NO. {i}!")
-        });
+            { new StringContent("trace"), "logLevel" },
+            { new StringContent($"A test message NO. {i}!"), "message" },
+        };
 
         try
         {
