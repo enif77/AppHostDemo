@@ -6,12 +6,14 @@ namespace AppHost.Controllers
 
     using Microsoft.Extensions.Logging;
     
+    using AppHost.Models;
+    
     
     [ApiController]
     [Route("log")]
     public class LoggingController : ControllerBase
     {
-        private static readonly string[] LogLevels = new[]
+        private static readonly string[] LogLevels =
         {
             "trace", "debug", "information", "warning", "error", "critical"
         };
@@ -23,7 +25,7 @@ namespace AppHost.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetLogLevels")]
+        [HttpGet]
         public IEnumerable<string> Get()
         {
             return LogLevels;
@@ -38,8 +40,25 @@ namespace AppHost.Controllers
                 logLevel = "information";
             }
 
+            // TODO: Switch by the logLevel.
+            
             _logger.LogInformation("A message '{Message}' at '{LogLevel}' log level received",
                 message, logLevel);
+        }
+        
+        [HttpPost]
+        [Route("/logMessage")]
+        public void LogMessage(LogMessage logMessage)
+        {
+            if (string.IsNullOrEmpty(logMessage.LogLevel))
+            {
+                logMessage.LogLevel = "information";
+            }
+
+            // TODO: Switch by the logLevel.
+            
+            _logger.LogInformation("A message '{Message}' at '{LogLevel}' log level received",
+                logMessage.Message, logMessage.LogLevel);
         }
     }    
 }
