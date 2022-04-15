@@ -12,7 +12,7 @@
     "AppHost": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "swagger",
       "applicationUrlxxx": "https://localhost:9999;http://localhost:9999",
       "applicationUrl": "http://localhost:9999",

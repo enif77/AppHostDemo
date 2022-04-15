@@ -1,5 +1,6 @@
 /* AppHostDemo - (C) 2022 Premysl Fara  */
 
+using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 
 using Serilog;
@@ -35,9 +36,22 @@ logger.LogInformation("Starting the app server...");
 
 await appServer.StartAsync();
 
-logger.LogInformation("The app server is started. Press ENTER to stop the app server...");
+Console.WriteLine("Starting the client process...");
 
-_ = Console.ReadLine();  // This represents a running application (the launcher).
+using (var clientProcess = new Process())
+{
+    clientProcess.StartInfo.CreateNoWindow = true;
+    clientProcess.StartInfo.UseShellExecute = false;
+    clientProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+    clientProcess.StartInfo.FileName =
+        "../../../../AppHost.Client/bin/Release/net6.0/publish/AppHost.Client";
+    clientProcess.StartInfo.Arguments = "-p=9999 -r=5";
+
+    clientProcess.Start();
+    clientProcess.WaitForExit();
+    
+    Console.WriteLine("The client process exited with the {0} exit code.", clientProcess.ExitCode);
+}
 
 logger.LogInformation("Stopping the app server...");
     
