@@ -1,5 +1,6 @@
 ﻿/* AppHostDemo - (C) 2022 Premysl Fara  */
 
+using System.Globalization;
 using System.Net.Http.Json;
 
 using AppHost.Client.Models;
@@ -7,12 +8,17 @@ using AppHost.Client.Models;
 
 Console.WriteLine("AppHost Client App v1.0.0");
 
+var port = 80;
+var repeatsCount = 10;
+
+ParseArgs(args);
+
 using (var client = new HttpClient
        {
-           BaseAddress = new Uri("http://localhost:9999")
+           BaseAddress = new Uri($"http://localhost:{port}")
        })
 {
-    for (var i = 1; i <= 10; i++)
+    for (var i = 1; i <= repeatsCount; i++)
     {
         Console.WriteLine("Sending message NO. {0}", i);
     
@@ -21,6 +27,42 @@ using (var client = new HttpClient
         SendLogMessageUsingJsonContent(client, "trace", $"A test message NO. {i}!");
         
         Thread.Sleep(1000);
+    }
+}
+
+
+void ParseArgs(string[] args)
+{
+    foreach (var a in args)
+    {
+        if (a.StartsWith("-p=", StringComparison.InvariantCulture))
+        {
+            var v = a.Substring(3);
+            var success = int.TryParse(v, NumberStyles.Integer, CultureInfo.InvariantCulture, out var p);
+            if (success && p >= 80)
+            {
+                port = p;
+                Console.WriteLine("The port is set to {0}.", port);
+            }
+            else
+            {
+                Console.Error.WriteLine("The '{0}' port value cannot be parsed or is less than 80.", v);
+            }
+        }
+        else if (a.StartsWith("-r=", StringComparison.InvariantCulture))
+        {
+            var v = a.Substring(3);
+            var success = int.TryParse(v, NumberStyles.Integer, CultureInfo.InvariantCulture, out var r);
+            if (success && r >= 1)
+            {
+                repeatsCount = r;
+                Console.WriteLine("The repeats count is set to {0}.", repeatsCount);
+            }
+            else
+            {
+                Console.Error.WriteLine("The '{0}' repeats count value cannot be parsed or is less than 1.", v);
+            }
+        }
     }
 }
 
