@@ -1,7 +1,5 @@
 /* AppHostDemo - (C) 2022 Premysl Fara  */
 
-using Microsoft.Extensions.Logging;
-
 namespace AppHost.AppServer;
 
 using System.Net;
@@ -11,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 
 public static class AppServerBuilder

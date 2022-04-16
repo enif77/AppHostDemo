@@ -31,7 +31,7 @@ public class AppServer : IAppServer
     }
 
 
-    public async Task StartAsync(CancellationTokenSource? cancellationTokenSource = null)
+    public async Task StartAsync(CancellationTokenSource? cancellationTokenSource = default)
     {
         if (IsRunning) throw new InvalidOperationException("The app server is already running.");
 
