@@ -48,7 +48,7 @@ public class AppServer : IAppServer
         // https://docs.microsoft.com/cs-cz/dotnet/api/system.threading.tasks.task.run?view=net-6.0
         var token = _cancellationTokenSource.Token;
 
-        var t = Task.Run(async () => 
+        var appServerTask = Task.Run(async () => 
         {
             if (token.IsCancellationRequested)
             {
@@ -64,16 +64,15 @@ public class AppServer : IAppServer
 
         await Task.Yield();
 
-        _appServerTask = t;
+        _appServerTask = appServerTask;
     }
 
 
     public async Task<TaskStatus> StopAsync()
     {
-        if (_cancellationTokenSource == null) throw new InvalidOperationException("The cancellation token source is not set.");
         if (IsRunning == false) throw new InvalidOperationException("The app server is not running.");
-
-        _cancellationTokenSource.Cancel();
+       
+        _cancellationTokenSource!.Cancel();  // We always set the _cancellationTokenSource in StartAsync().
 
         try
         {
