@@ -18,8 +18,11 @@ public class AppServer : IAppServer
     public ILogger Logger { get; }
 
     public bool IsRunning
-        => _appServerTask != null;
-    
+        => _appServerTask != null &&
+           _appServerTask.IsCompleted == false &&
+           (_appServerTask.Status == TaskStatus.Running ||
+            _appServerTask.Status == TaskStatus.WaitingToRun ||
+            _appServerTask.Status == TaskStatus.WaitingForActivation);
 
     public AppServer(IHost app, ILogger logger)
     {
