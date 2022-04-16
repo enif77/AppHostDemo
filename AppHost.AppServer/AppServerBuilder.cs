@@ -59,6 +59,8 @@ public static class AppServerBuilder
             options.LoggerConfigurator.Configure(builder.Logging);
             builder.WebHost.ConfigureLogging(webHostBuilder =>
             {
+                // https://stackoverflow.com/questions/53457386/asp-net-core-logging-too-verbose
+                // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/diagnostics?view=aspnetcore-6.0
                 webHostBuilder
                     .AddFilter(logLevel => logLevel >= options.LoggerConfigurator.MinimalLogLevel);
                 // webHostBuilder
