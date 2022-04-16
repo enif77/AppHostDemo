@@ -12,11 +12,14 @@ public class AppServer : IAppServer
 {
     private readonly IHost _app;
     private Task? _appServerTask;
-    private CancellationTokenSource? _tokenSource;
+    private CancellationTokenSource? _cancellationTokenSource;
     private bool _tokenSourceCanBeDisposed;
 
     public ILogger Logger { get; }
 
+    public bool IsRunning
+        => _appServerTask != null;
+    
 
     public AppServer(IHost app, ILogger logger)
     {
@@ -25,22 +28,22 @@ public class AppServer : IAppServer
     }
 
 
-    public async Task StartAsync(CancellationTokenSource? tokenSource = null)
+    public async Task StartAsync(CancellationTokenSource? cancellationTokenSource = null)
     {
-        if (_appServerTask != null) throw new InvalidOperationException("The app server is already running.");
+        if (IsRunning) throw new InvalidOperationException("The app server is already running.");
 
-        if (tokenSource == null)
+        if (cancellationTokenSource == null)
         {
-            _tokenSource = new CancellationTokenSource();
+            _cancellationTokenSource = new CancellationTokenSource();
             _tokenSourceCanBeDisposed = true;
         }
         else
         {
-            _tokenSource = tokenSource;
+            _cancellationTokenSource = cancellationTokenSource;
         }
         
         // https://docs.microsoft.com/cs-cz/dotnet/api/system.threading.tasks.task.run?view=net-6.0
-        var token = _tokenSource.Token;
+        var token = _cancellationTokenSource.Token;
 
         var t = Task.Run(async () => 
         {
@@ -64,14 +67,14 @@ public class AppServer : IAppServer
 
     public async Task<TaskStatus> StopAsync()
     {
-        if (_tokenSource == null) throw new InvalidOperationException("The cancellation token source is not set.");
-        if (_appServerTask == null) throw new InvalidOperationException("The app server is not running.");
-        
-        _tokenSource.Cancel();
+        if (_cancellationTokenSource == null) throw new InvalidOperationException("The cancellation token source is not set.");
+        if (IsRunning == false) throw new InvalidOperationException("The app server is not running.");
+
+        _cancellationTokenSource.Cancel();
 
         try
         {
-            await _appServerTask;
+            await _appServerTask!;  // IsRunning checks for null!
         }
         catch (AggregateException e)
         {
@@ -90,14 +93,14 @@ public class AppServer : IAppServer
         {
             if (_tokenSourceCanBeDisposed)
             {
-                _tokenSource.Dispose();
+                _cancellationTokenSource.Dispose();
             }
         }
 
-        var status = _appServerTask.Status;
+        var status = _appServerTask!.Status;  // IsRunning checks for null!
 
         _appServerTask = null;
-        _tokenSource = null;
+        _cancellationTokenSource = null;
         _tokenSourceCanBeDisposed = false;
         
         return status;
