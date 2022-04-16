@@ -11,6 +11,11 @@ using Microsoft.Extensions.Logging;
 public interface ILoggerConfigurator
 {
     /// <summary>
+    /// Gets the minimum log level.
+    /// </summary>
+    LogLevel MinimalLogLevel { get; }
+    
+    /// <summary>
     /// Configures and adds a custom logger.
     /// </summary>
     /// <param name="builder">An ILoggingBuilder instance.</param>

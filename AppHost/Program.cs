@@ -1,42 +1,48 @@
 /* AppHostDemo - (C) 2022 Premysl Fara  */
 
 using System.Diagnostics;
-using Microsoft.Extensions.Logging;
 
-using Serilog;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using AppHost;
 using AppHost.AppServer;
 using AppHost.Features.Controllers;
+using AppHost.Services;
 
 
 // Console.WriteLine("The app is running. Press ENTER to start the app server...");
 // _ = Console.ReadLine();  // This represents a running application (the launcher) before it runs the app itself.
 
 
-Log.Logger = new LoggerConfiguration()
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .CreateLogger();
-
+// The AppServer configuration.
 var appServerOptions = new AppServerOptions()
 {
     Args = args,
     LoggerConfigurator = new ConsoleLoggerConfigurator(),
-    Port = 9999
+    Port = 9999,
+    RegisterServices = services =>
+    {
+        services.AddSingleton<ILoggingService, LoggingService>();
+    }
 };
 
 // Add controller(s) from the features project.
 appServerOptions.AssembliesWithControllers.Add(typeof(FeaturesTestController).Assembly);
 
+// Build the AppServer.
 var appServer = AppServerBuilder.Build(appServerOptions);
+
+// We use the same logger, as the AppServer we just build.
 var logger = appServer.Logger;
+
 
 logger.LogInformation("Starting the app server...");
 
 await appServer.StartAsync();
 
-Console.WriteLine("Starting the client process...");
+
+logger.LogInformation("Starting the client process...");
 
 using (var clientProcess = new Process())
 {
@@ -57,7 +63,7 @@ logger.LogInformation("Stopping the app server...");
     
 var status = await appServer.StopAsync();
     
-logger.LogDebug("Task status: {Status}", status);
+logger.LogInformation("Task status: {Status}", status);
 
 logger.LogInformation("DONE!");
 

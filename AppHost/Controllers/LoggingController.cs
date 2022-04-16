@@ -3,62 +3,46 @@
 namespace AppHost.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-
-    using Microsoft.Extensions.Logging;
     
     using AppHost.Models;
+    using AppHost.Services;
     
     
     [ApiController]
     [Route("log")]
     public class LoggingController : ControllerBase
     {
-        private static readonly string[] LogLevels =
-        {
-            "trace", "debug", "information", "warning", "error", "critical"
-        };
+        private readonly ILoggingService _loggingService;
 
-        private readonly ILogger<LoggingController> _logger;
-
-        public LoggingController(ILogger<LoggingController> logger)
+        
+        public LoggingController(ILoggingService loggingService)
         {
-            _logger = logger;
+            _loggingService = loggingService;
         }
 
+        
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return LogLevels;
+            return _loggingService.GetLogLevels();
         }
         
-        [HttpPost]
-        // [Consumes("application/x-www-form-urlencoded")]  // -> For FormUrlEncodedContent, not necessary.
-        public void Log([FromForm] string? logLevel, [FromForm] string? message)
-        {
-            if (string.IsNullOrEmpty(logLevel))
-            {
-                logLevel = "information";
-            }
-
-            // TODO: Switch by the logLevel.
-            
-            _logger.LogInformation("A message '{Message}' at '{LogLevel}' log level received",
-                message, logLevel);
-        }
+        // [HttpPost]
+        // // [Consumes("application/x-www-form-urlencoded")]  // -> For FormUrlEncodedContent, not necessary.
+        // public void Log([FromForm] string? logLevel, [FromForm] string? message)
+        // {
+        //     _loggingService.Log(new LogMessage()
+        //         {
+        //             LogLevel = logLevel,
+        //             Message = message
+        //         });
+        // }
         
         [HttpPost]
-        [Route("/logMessage")]
+        //[Route("/log")]
         public void LogMessage(LogMessage logMessage)
         {
-            if (string.IsNullOrEmpty(logMessage.LogLevel))
-            {
-                logMessage.LogLevel = "information";
-            }
-
-            // TODO: Switch by the logLevel.
-            
-            _logger.LogInformation("A message '{Message}' at '{LogLevel}' log level received",
-                logMessage.Message, logMessage.LogLevel);
+            _loggingService.Log(logMessage);
         }
     }    
 }

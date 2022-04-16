@@ -2,6 +2,7 @@
 
 namespace AppHost.Models;
 
+
 public class LogMessage
 {
     public string? LogLevel { get; set; }

@@ -1,8 +1,10 @@
 /* AppHostDemo - (C) 2022 Premysl Fara  */
 
-using System.Net;
+using Microsoft.Extensions.Logging;
 
 namespace AppHost.AppServer;
+
+using System.Net;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +33,7 @@ public static class AppServerBuilder
             WebRootPath = webRootPath
         });
 
+        // A specific port should be used?
         if (options.Port > 0)
         {
             builder.WebHost.ConfigureKestrel(serverOptions =>
@@ -49,15 +52,27 @@ public static class AppServerBuilder
             });
         }
         
+        
         // Add custom logging?
-        options.LoggerConfigurator?.Configure(builder.Logging);
-
+        if (options.LoggerConfigurator != null)
+        {
+            options.LoggerConfigurator.Configure(builder.Logging);
+            builder.WebHost.ConfigureLogging(webHostBuilder =>
+            {
+                webHostBuilder
+                    .AddFilter(logLevel => logLevel >= options.LoggerConfigurator.MinimalLogLevel);
+                // webHostBuilder
+                //     .AddFilter(logLevel => logLevel >= LogLevel.Warning);
+            });
+        }
+        
+        
         // Add services to the container.
 
         var mvcBuilder = builder.Services.AddControllers()
             .AddApplicationPart(typeof(AppServerBuilder).Assembly); // This adds controllers from this assembly.
 
-        // This adds controllers from this user defined assemblies.
+        // This adds controllers from user defined assemblies.
         foreach (var assembly in options.AssembliesWithControllers)
         {
             mvcBuilder.AddApplicationPart(assembly);
@@ -70,6 +85,9 @@ public static class AppServerBuilder
     
         // This removes the CTRL+C app shutdown.
         builder.Services.AddSingleton<IHostLifetime, NoopConsoleLifetime>();
+
+        // Register user defined services to the DI container.
+        options.RegisterServices?.Invoke(builder.Services);
 
         var app = builder.Build();
             
