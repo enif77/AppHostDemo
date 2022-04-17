@@ -1,5 +1,7 @@
 /* AppHostDemo - (C) 2022 Premysl Fara  */
 
+using Microsoft.AspNetCore.StaticFiles;
+
 namespace AppHost.AppServer;
 
 using System.Net;
@@ -108,7 +110,40 @@ public static class AppServerBuilder
         {
             // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/static-files?view=aspnetcore-6.0
             app.UseDefaultFiles();
-            app.UseStaticFiles();
+
+            // Blazor is supported when static files support is on only.
+            if (options.SupportBlazorWebAssembly)
+            {
+                // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/static-files?view=aspnetcore-6.0
+                
+                // Set up custom content types for Blazor. See a web.config/staticContent of a WebAssembly Blazor app.
+                var provider = new FileExtensionContentTypeProvider();
+
+                provider.Mappings.Remove(".blat");
+                provider.Mappings.Remove(".dat"); 
+                provider.Mappings.Remove(".dll"); 
+                provider.Mappings.Remove(".json");
+                provider.Mappings.Remove(".wasm");
+                provider.Mappings.Remove(".woff");
+                provider.Mappings.Remove(".woff2");
+            
+                provider.Mappings[".blat"] = "application/octet-stream";
+                provider.Mappings[".dll"] = "application/octet-stream";
+                provider.Mappings[".dat"] = "application/octet-stream";
+                provider.Mappings[".json"] = "application/json";
+                provider.Mappings[".wasm"] = "application/wasm";
+                provider.Mappings[".woff"] = "application/font-woff";
+                provider.Mappings[".woff2"] = "application/font-woff"; 
+            
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    ContentTypeProvider = provider
+                });
+            }
+            else
+            {
+                app.UseStaticFiles();
+            }
         }
 
         if (options.UseAuthorization)
@@ -116,7 +151,22 @@ public static class AppServerBuilder
             app.UseAuthorization();
         }
 
-        app.MapControllers();
+        // Blazor is supported when static files support is on only.
+        if (options.UseStaticFiles && options.SupportBlazorWebAssembly)
+        {
+            // Blazor apps need this to properly map routes to sub-pages like https://127.0.0.1:7777/fetchdata.
+            // https://docs.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly?view=aspnetcore-6.0
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapFallbackToFile("/{*path:nonfile}", "index.html");
+            });
+        }
+        else
+        {
+            app.MapControllers();
+        }
    
         return new AppServer(app, app.Logger);
     }

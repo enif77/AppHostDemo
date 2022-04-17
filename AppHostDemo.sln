@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost.Client", "AppHost.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticFilesDemoApp", "StaticFilesDemoApp\StaticFilesDemoApp.csproj", "{6221CC0A-80D0-4283-A253-3A5A6B028E96}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDemoApp", "BlazorDemoApp\BlazorDemoApp.csproj", "{A5CA4D36-D6AE-4D45-A7AE-CE9B157F0975}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDemoApp.Launcher", "BlazorDemoApp.Launcher\BlazorDemoApp.Launcher.csproj", "{59573405-A7AC-4021-B092-85A823381F0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{6221CC0A-80D0-4283-A253-3A5A6B028E96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6221CC0A-80D0-4283-A253-3A5A6B028E96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6221CC0A-80D0-4283-A253-3A5A6B028E96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5CA4D36-D6AE-4D45-A7AE-CE9B157F0975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5CA4D36-D6AE-4D45-A7AE-CE9B157F0975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5CA4D36-D6AE-4D45-A7AE-CE9B157F0975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5CA4D36-D6AE-4D45-A7AE-CE9B157F0975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59573405-A7AC-4021-B092-85A823381F0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59573405-A7AC-4021-B092-85A823381F0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59573405-A7AC-4021-B092-85A823381F0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59573405-A7AC-4021-B092-85A823381F0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

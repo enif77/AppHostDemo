@@ -38,7 +38,12 @@ public class AppServerOptions
     /// A path to a dist directory of an Angular app. Ignored, when the UseStaticFiles is disabled.
     /// </summary>
     public string WebRootPath { get; init; } = string.Empty;
-    
+
+    /// <summary>
+    /// Adds required Blazor MIME types to support hosting Blazor WebAssembly apps.
+    /// </summary>
+    public bool SupportBlazorWebAssembly { get; init; }
+
     /// <summary>
     /// The list of assemblies containing controllers.
     /// </summary>
