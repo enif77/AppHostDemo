@@ -11,7 +11,7 @@ var appServer = AppServerBuilder.Build(new AppServerOptions()
     Port = 7777,
     UseHttpsRedirection = true,
     UseStaticFiles = true,
-    WebRootPath = "../../../wwwroot/",
+    WebRootPath = "../../../wwwroot/"
 });
 
 var logger = appServer.Logger;
