@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.Logging;
 
-using AppHost.AppServer;
+using AppHost.Server;
 
 
 var appServer = AppServerBuilder.Build(new AppServerOptions()

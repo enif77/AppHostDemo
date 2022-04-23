@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost.AppServer", "AppHost.AppServer\AppHost.AppServer.csproj", "{7EF4C61A-0CC2-4942-9598-62C3E5CF457A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost.Server", "AppHost.Server\AppHost.Server.csproj", "{7EF4C61A-0CC2-4942-9598-62C3E5CF457A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost.Features", "AppHost.Features\AppHost.Features.csproj", "{90A67249-2926-440E-BFCC-80767749C1E3}"
 EndProject

@@ -1,6 +1,6 @@
 /* AppHostDemo - (C) 2022 Premysl Fara  */
 
-namespace AppHost.AppServer.Controllers
+namespace AppHost.Server.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     

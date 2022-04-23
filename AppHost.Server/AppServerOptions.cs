@@ -1,6 +1,6 @@
 /* AppHostDemo - (C) 2022 Premysl Fara  */
 
-namespace AppHost.AppServer;
+namespace AppHost.Server;
 
 using System.Reflection;
 

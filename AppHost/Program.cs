@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using AppHost;
-using AppHost.AppServer;
+using AppHost.Server;
 using AppHost.Features.Controllers;
 using AppHost.Services;
 

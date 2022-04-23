@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.StaticFiles;
 
-namespace AppHost.AppServer;
+namespace AppHost.Server;
 
 using System.Net;
 

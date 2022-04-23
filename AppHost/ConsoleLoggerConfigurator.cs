@@ -4,7 +4,7 @@ namespace AppHost;
 
 using Microsoft.Extensions.Logging;
 
-using AppHost.AppServer;
+using AppHost.Server;
 
 
 public class ConsoleLoggerConfigurator : ILoggerConfigurator
