@@ -9,11 +9,12 @@ var appServer = AppServerBuilder.Build(new AppServerOptions()
 {
     Args = args,
     Port = 7777,
-    UseHttpsRedirection = true,
+    UseHttpsRedirection = false,  // TODO: This does not work!
     UseStaticFiles = true,
     SupportBlazorWebAssembly = true,
     WebRootPath = "../../../../BlazorDemoApp/bin/Release/net6.0/publish/wwwroot"
 });
+
 
 var logger = appServer.Logger;
 
