@@ -1,19 +1,31 @@
 @page "/counter"
 
+@using BlazorDemoApp.Data
+
+@inject DataService DataService
+
+
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
+<p role="status">Current count: @_currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
-@code {
-    private int currentCount = 0;
+@code
+{
+    private int _currentCount = 0;
+
+
+    protected override void OnInitialized()
+    {
+        _currentCount = DataService.CounterValue;
+    }
 
     private void IncrementCount()
     {
-        currentCount++;
+        _currentCount++;
+        DataService.CounterValue = _currentCount;
     }
-
 }
