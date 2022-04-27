@@ -1,13 +1,12 @@
 /* AppHostDemo - (C) 2022 Premysl Fara  */
 
-using Microsoft.AspNetCore.StaticFiles;
-
 namespace AppHost.Server;
 
 using System.Net;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.StaticFiles;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -167,7 +166,11 @@ public static class AppServerBuilder
         {
             app.MapControllers();
         }
-   
+
+        // Minimal API demo.
+        // https://docs.microsoft.com/en-us/aspnet/core/tutorials/min-web-api?view=aspnetcore-6.0&tabs=visual-studio-code
+        app.MapGet("/hello", () => "Hello, World!");
+        
         return new AppServer(app, app.Logger);
     }
 }
